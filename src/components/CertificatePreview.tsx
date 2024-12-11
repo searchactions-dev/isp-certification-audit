@@ -19,6 +19,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       layout
       className="bg-white rounded-2xl shadow-lg p-8 border border-certificate-border aspect-[1/1.4142] relative overflow-hidden"
     >
+      <div className="absolute inset-0 bg-certificate-pattern opacity-5" />
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-50" />
       
       <div className="relative z-10 h-full flex flex-col items-center justify-between text-center">

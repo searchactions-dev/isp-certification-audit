@@ -14,9 +14,10 @@ interface CertificateData {
 interface CertificatePreviewProps {
   data: CertificateData;
   isDark?: boolean;
+  onThemeChange: (isDark: boolean) => void;
 }
 
-export const CertificatePreview = ({ data, isDark = true }: CertificatePreviewProps) => {
+export const CertificatePreview = ({ data, isDark = true, onThemeChange }: CertificatePreviewProps) => {
   const formatFileName = () => {
     const auditSlug = data.auditName.toLowerCase().replace(/\s+/g, '-');
     const companySlug = data.companyName.toLowerCase().replace(/\s+/g, '-');
@@ -53,6 +54,17 @@ export const CertificatePreview = ({ data, isDark = true }: CertificatePreviewPr
 
   return (
     <div className="space-y-4 font-['Poppins']">
+      <div className="flex justify-end mb-4">
+        <select 
+          value={isDark ? "dark" : "light"}
+          onChange={(e) => onThemeChange(e.target.value === "dark")}
+          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
+        >
+          <option value="dark">Dark Theme</option>
+          <option value="light">Light Theme</option>
+        </select>
+      </div>
+
       <motion.div
         id="certificate"
         layout

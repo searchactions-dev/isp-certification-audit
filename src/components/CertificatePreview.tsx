@@ -61,7 +61,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
               />
             )}
             
-            <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">
+            <div className="flex flex-col gap-[50px] text-center max-w-2xl mx-auto">
               <motion.h1
                 layout
                 className="text-white text-4xl font-bold"
@@ -71,7 +71,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
               <motion.h2
                 layout
-                className="text-[#FFD200] text-2xl font-bold"
+                className="text-[#FFD200] text-[28px] font-bold"
               >
                 {data.companyName || "Company Name"}
               </motion.h2>

@@ -16,17 +16,36 @@ interface CertificatePreviewProps {
 }
 
 export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
+  const formatFileName = (format: string) => {
+    const auditSlug = data.auditName.toLowerCase().replace(/\s+/g, '-');
+    const companySlug = data.companyName.toLowerCase().replace(/\s+/g, '-');
+    return `isp-${auditSlug}-certificate-${companySlug}.${format}`;
+  };
+
   const handleDownload = async (format: 'png' | 'jpg') => {
     try {
       const element = document.getElementById('certificate');
       if (!element) return;
 
+      // Wait for background image to load
+      const bgImg = new Image();
+      bgImg.src = 'https://www.ispartnersllc.com/wp-content/uploads/isp-certified-bg.svg';
+      await new Promise((resolve) => {
+        bgImg.onload = resolve;
+      });
+
       const dataUrl = format === 'png' 
-        ? await htmlToImage.toPng(element)
-        : await htmlToImage.toJpeg(element);
+        ? await htmlToImage.toPng(element, {
+            quality: 1.0,
+            backgroundColor: '#ffffff'
+          })
+        : await htmlToImage.toJpeg(element, {
+            quality: 0.95,
+            backgroundColor: '#ffffff'
+          });
       
       const link = document.createElement('a');
-      link.download = `certificate.${format}`;
+      link.download = formatFileName(format);
       link.href = dataUrl;
       link.click();
       

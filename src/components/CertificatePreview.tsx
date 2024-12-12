@@ -36,26 +36,17 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
       // Clone the certificate element
       const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.width = '1200px'; // Set fixed width
-      clone.style.height = '1697px'; // Maintain aspect ratio 1:1.4142
+      clone.style.width = '1200px';
+      clone.style.height = '1697px';
+      clone.style.backgroundImage = 'url(/isp-certified-bg.jpg)';
+      clone.style.backgroundSize = 'cover';
+      clone.style.backgroundPosition = 'center';
       container.appendChild(clone);
-
-      // Wait for background image to load
-      const bgImg = new Image();
-      bgImg.src = '/isp-certified-bg.jpg';
-      await new Promise((resolve) => {
-        bgImg.onload = resolve;
-      });
 
       const dataUrl = await htmlToImage.toJpeg(clone, {
         quality: 0.95,
         width: 1200,
         height: 1697,
-        style: {
-          backgroundImage: `url(${bgImg.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }
       });
       
       // Clean up

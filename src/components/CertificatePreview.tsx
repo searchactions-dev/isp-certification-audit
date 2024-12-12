@@ -41,6 +41,18 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       clone.style.backgroundImage = 'url(/isp-certified-bg.jpg)';
       clone.style.backgroundSize = 'cover';
       clone.style.backgroundPosition = 'center';
+
+      // Set explicit font sizes for the cloned elements
+      const auditNameEl = clone.querySelector('h1');
+      const companyNameEl = clone.querySelector('h2');
+      const dateEl = clone.querySelector('p:nth-of-type(1)');
+      const summaryEl = clone.querySelector('p:nth-of-type(2)');
+      
+      if (auditNameEl) auditNameEl.style.fontSize = '36px';
+      if (companyNameEl) companyNameEl.style.fontSize = '28px';
+      if (dateEl) dateEl.style.fontSize = '18px';
+      if (summaryEl) summaryEl.style.fontSize = '16px';
+
       container.appendChild(clone);
 
       const dataUrl = await htmlToImage.toJpeg(clone, {

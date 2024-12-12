@@ -31,69 +31,17 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         return;
       }
 
-      // Create a container with explicit dimensions
-      const container = document.createElement('div');
-      container.style.position = 'fixed';
-      container.style.left = '-9999px';
-      container.style.top = '-9999px';
-      document.body.appendChild(container);
-
-      // Clone the certificate element
-      const clone = element.cloneNode(true) as HTMLElement;
-      
-      // Set width to 800px and calculate height to maintain A4 aspect ratio
-      const width = 800;
-      const height = Math.round(width * 1.4142);
-      
-      clone.style.width = `${width}px`;
-      clone.style.height = `${height}px`;
-
-      // Load background image first
-      const bgImg = new Image();
-      bgImg.src = '/isp-cert-bg.jpg';
-      console.log('Loading background image:', bgImg.src);
-      
-      try {
-        await new Promise((resolve, reject) => {
-          bgImg.onload = resolve;
-          bgImg.onerror = (error) => {
-            console.error('Background image failed to load:', error);
-            reject(error);
-          };
-        });
-        console.log('Background image loaded successfully');
-      } catch (error) {
-        console.error('Error loading background image:', error);
-        throw error;
-      }
-
-      clone.style.backgroundImage = `url(${bgImg.src})`;
-      clone.style.backgroundSize = 'cover';
-      clone.style.backgroundPosition = 'center';
-
-      // Set explicit font sizes proportional to the new size
-      const auditNameEl = clone.querySelector('h1') as HTMLElement;
-      const companyNameEl = clone.querySelector('h2') as HTMLElement;
-      const dateEl = clone.querySelector('p:nth-of-type(1)') as HTMLElement;
-      const summaryEl = clone.querySelector('p:nth-of-type(2)') as HTMLElement;
-      
-      if (auditNameEl) auditNameEl.style.fontSize = '24px';
-      if (companyNameEl) companyNameEl.style.fontSize = '20px';
-      if (dateEl) dateEl.style.fontSize = '16px';
-      if (summaryEl) summaryEl.style.fontSize = '14px';
-
-      container.appendChild(clone);
-
       console.log('Generating JPEG image');
-      const dataUrl = await htmlToImage.toJpeg(clone, {
+      const dataUrl = await htmlToImage.toJpeg(element, {
         quality: 0.95,
-        width: width,
-        height: height,
+        width: 800,
+        height: Math.round(800 * 1.4142),
         backgroundColor: '#ffffff',
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left'
+        }
       });
-      
-      // Clean up
-      document.body.removeChild(container);
       
       console.log('Creating download link');
       const link = document.createElement('a');

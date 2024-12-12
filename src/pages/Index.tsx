@@ -65,14 +65,6 @@ const Index = () => {
         transition={{ duration: 0.5 }}
         className="max-w-7xl mx-auto"
       >
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Audit Certificate Generator
-          </h1>
-          <p className="text-lg text-gray-600">
-            Create professional audit certificates in seconds
-          </p>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <motion.div

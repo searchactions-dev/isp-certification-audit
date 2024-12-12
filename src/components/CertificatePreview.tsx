@@ -27,6 +27,19 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       const element = document.getElementById('certificate');
       if (!element) return;
 
+      // Create a container with explicit dimensions
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.left = '-9999px';
+      container.style.top = '-9999px';
+      document.body.appendChild(container);
+
+      // Clone the certificate element
+      const clone = element.cloneNode(true) as HTMLElement;
+      clone.style.width = '1200px'; // Set fixed width
+      clone.style.height = '1697px'; // Maintain aspect ratio 1:1.4142
+      container.appendChild(clone);
+
       // Wait for background image to load
       const bgImg = new Image();
       bgImg.src = '/isp-certified-bg.jpg';
@@ -34,15 +47,19 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         bgImg.onload = resolve;
       });
 
-      const dataUrl = await htmlToImage.toJpeg(element, {
+      const dataUrl = await htmlToImage.toJpeg(clone, {
         quality: 0.95,
-        backgroundColor: '#ffffff',
+        width: 1200,
+        height: 1697,
         style: {
           backgroundImage: `url(${bgImg.src})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }
       });
+      
+      // Clean up
+      document.body.removeChild(container);
       
       const link = document.createElement('a');
       link.download = formatFileName();

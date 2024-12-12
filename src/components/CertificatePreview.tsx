@@ -16,13 +16,13 @@ interface CertificatePreviewProps {
 }
 
 export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
-  const formatFileName = (format: string) => {
+  const formatFileName = () => {
     const auditSlug = data.auditName.toLowerCase().replace(/\s+/g, '-');
     const companySlug = data.companyName.toLowerCase().replace(/\s+/g, '-');
-    return `isp-${auditSlug}-certificate-${companySlug}.${format}`;
+    return `isp-${auditSlug}-certificate-${companySlug}.jpg`;
   };
 
-  const handleDownload = async (format: 'png' | 'jpg') => {
+  const handleDownload = async () => {
     try {
       const element = document.getElementById('certificate');
       if (!element) return;
@@ -34,32 +34,22 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         bgImg.onload = resolve;
       });
 
-      const dataUrl = format === 'png' 
-        ? await htmlToImage.toPng(element, {
-            quality: 1.0,
-            backgroundColor: '#ffffff',
-            style: {
-              backgroundImage: `url(${bgImg.src})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }
-          })
-        : await htmlToImage.toJpeg(element, {
-            quality: 0.95,
-            backgroundColor: '#ffffff',
-            style: {
-              backgroundImage: `url(${bgImg.src})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }
-          });
+      const dataUrl = await htmlToImage.toJpeg(element, {
+        quality: 0.95,
+        backgroundColor: '#ffffff',
+        style: {
+          backgroundImage: `url(${bgImg.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }
+      });
       
       const link = document.createElement('a');
-      link.download = formatFileName(format);
+      link.download = formatFileName();
       link.href = dataUrl;
       link.click();
       
-      toast.success(`Certificate downloaded as ${format.toUpperCase()}`);
+      toast.success('Certificate downloaded as JPG');
     } catch (err) {
       console.error('Error downloading certificate:', err);
       toast.error('Failed to download certificate');
@@ -127,15 +117,9 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         </div>
       </motion.div>
 
-      <div className="flex gap-4 justify-center">
+      <div className="flex justify-center">
         <button
-          onClick={() => handleDownload('png')}
-          className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-        >
-          Download PNG
-        </button>
-        <button
-          onClick={() => handleDownload('jpg')}
+          onClick={handleDownload}
           className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
         >
           Download JPG

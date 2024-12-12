@@ -29,7 +29,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
       // Wait for background image to load
       const bgImg = new Image();
-      bgImg.src = 'https://www.ispartnersllc.com/wp-content/uploads/isp-certified-bg.jpg';
+      bgImg.src = '/certificate-bg.jpg';
       await new Promise((resolve) => {
         bgImg.onload = resolve;
       });
@@ -73,7 +73,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         layout
         className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg"
         style={{
-          backgroundImage: "url('https://www.ispartnersllc.com/wp-content/uploads/isp-certified-bg.jpg')",
+          backgroundImage: "url('/certificate-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}

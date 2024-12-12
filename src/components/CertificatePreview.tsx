@@ -61,7 +61,12 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       <motion.div
         id="certificate"
         layout
-        className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg bg-[url('/isp-cert-bg.jpg')] bg-cover bg-center"
+        className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg"
+        style={{
+          backgroundImage: 'url(https://www.ispartnersllc.com/wp-content/uploads/isp-cert-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
       >
         <div className="absolute inset-0 p-8">
           <div className="flex flex-col gap-4">

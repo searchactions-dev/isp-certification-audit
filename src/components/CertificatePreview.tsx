@@ -24,8 +24,12 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
   const handleDownload = async () => {
     try {
+      console.log('Starting certificate download process');
       const element = document.getElementById('certificate');
-      if (!element) return;
+      if (!element) {
+        console.error('Certificate element not found');
+        return;
+      }
 
       // Create a container with explicit dimensions
       const container = document.createElement('div');
@@ -37,9 +41,9 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       // Clone the certificate element
       const clone = element.cloneNode(true) as HTMLElement;
       
-      // Set width to 800px and calculate height to maintain aspect ratio (1:1.4142)
+      // Set width to 800px and calculate height to maintain A4 aspect ratio
       const width = 800;
-      const height = Math.round(width * 1.4142); // Maintains A4 aspect ratio
+      const height = Math.round(width * 1.4142);
       
       clone.style.width = `${width}px`;
       clone.style.height = `${height}px`;
@@ -47,11 +51,21 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       // Load background image first
       const bgImg = new Image();
       bgImg.src = '/isp-cert-bg.jpg';
+      console.log('Loading background image:', bgImg.src);
       
-      await new Promise((resolve, reject) => {
-        bgImg.onload = resolve;
-        bgImg.onerror = reject;
-      });
+      try {
+        await new Promise((resolve, reject) => {
+          bgImg.onload = resolve;
+          bgImg.onerror = (error) => {
+            console.error('Background image failed to load:', error);
+            reject(error);
+          };
+        });
+        console.log('Background image loaded successfully');
+      } catch (error) {
+        console.error('Error loading background image:', error);
+        throw error;
+      }
 
       clone.style.backgroundImage = `url(${bgImg.src})`;
       clone.style.backgroundSize = 'cover';
@@ -70,15 +84,18 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
       container.appendChild(clone);
 
+      console.log('Generating JPEG image');
       const dataUrl = await htmlToImage.toJpeg(clone, {
         quality: 0.95,
-        width: 800,  // Explicitly set to 800px
-        height: Math.round(800 * 1.4142),  // Calculate height based on width
+        width: width,
+        height: height,
+        backgroundColor: '#ffffff',
       });
       
       // Clean up
       document.body.removeChild(container);
       
+      console.log('Creating download link');
       const link = document.createElement('a');
       link.download = formatFileName();
       link.href = dataUrl;

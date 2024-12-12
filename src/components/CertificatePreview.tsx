@@ -38,15 +38,15 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       const clone = element.cloneNode(true) as HTMLElement;
       clone.style.width = '1200px';
       clone.style.height = '1697px';
-      clone.style.backgroundImage = 'url(/isp-certified-bg.jpg)';
+      clone.style.backgroundImage = 'url(/isp-cert-bg.jpg)';
       clone.style.backgroundSize = 'cover';
       clone.style.backgroundPosition = 'center';
 
       // Set explicit font sizes for the cloned elements
-      const auditNameEl = clone.querySelector('h1');
-      const companyNameEl = clone.querySelector('h2');
-      const dateEl = clone.querySelector('p:nth-of-type(1)');
-      const summaryEl = clone.querySelector('p:nth-of-type(2)');
+      const auditNameEl = clone.querySelector('h1') as HTMLElement;
+      const companyNameEl = clone.querySelector('h2') as HTMLElement;
+      const dateEl = clone.querySelector('p:nth-of-type(1)') as HTMLElement;
+      const summaryEl = clone.querySelector('p:nth-of-type(2)') as HTMLElement;
       
       if (auditNameEl) auditNameEl.style.fontSize = '36px';
       if (companyNameEl) companyNameEl.style.fontSize = '28px';
@@ -83,7 +83,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         layout
         className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg"
         style={{
-          backgroundImage: "url('/isp-certified-bg.jpg')",
+          backgroundImage: "url('/isp-cert-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}

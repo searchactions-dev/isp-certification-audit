@@ -57,7 +57,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         layout
         className="w-full aspect-[1/1.4142] relative overflow-hidden"
         style={{
-          backgroundImage: 'url(/isp-cert-bg.jpg)',
+          backgroundImage: 'url(/isp-certified-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           fontFamily: 'Poppins, sans-serif'

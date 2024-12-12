@@ -62,8 +62,8 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
       const dataUrl = await htmlToImage.toJpeg(clone, {
         quality: 0.95,
-        width: width,
-        height: height,
+        width: 800,  // Explicitly set to 800px
+        height: Math.round(800 * 1.4142),  // Calculate height based on width
       });
       
       // Clean up

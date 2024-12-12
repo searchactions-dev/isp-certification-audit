@@ -13,9 +13,10 @@ interface CertificateData {
 
 interface CertificatePreviewProps {
   data: CertificateData;
+  isDark?: boolean;
 }
 
-export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
+export const CertificatePreview = ({ data, isDark = true }: CertificatePreviewProps) => {
   const formatFileName = () => {
     const auditSlug = data.auditName.toLowerCase().replace(/\s+/g, '-');
     const companySlug = data.companyName.toLowerCase().replace(/\s+/g, '-');
@@ -57,7 +58,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
         layout
         className="w-full aspect-[1/1.4142] relative overflow-hidden"
         style={{
-          backgroundImage: 'url(/isp-certified-background.jpg)',
+          backgroundImage: isDark ? 'url(/isp-certified-background.jpg)' : 'url(/public/isp-certificage-bg-white.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           fontFamily: 'Poppins, sans-serif'
@@ -78,7 +79,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
             <div className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
               <motion.h1
                 layout
-                className="text-white text-4xl font-bold"
+                className={isDark ? "text-white text-4xl font-bold" : "text-[#0a0f12] text-4xl font-bold"}
               >
                 {data.auditName || "Audit Name"}
               </motion.h1>
@@ -92,7 +93,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
               <motion.p
                 layout
-                className="text-white text-md"
+                className={isDark ? "text-white text-md" : "text-[#0a0f12] text-md"}
               >
                 {data.dateCertified
                   ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
@@ -102,7 +103,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
               {data.summary && (
                 <motion.p
                   layout
-                  className="text-white text-base"
+                  className={isDark ? "text-white text-base" : "text-[#0a0f12] text-base"}
                 >
                   {data.summary}
                 </motion.p>

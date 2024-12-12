@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import * as htmlToImage from 'html-to-image';
+import { toast } from "sonner";
 
 interface CertificateData {
   auditName: string;
@@ -14,73 +16,100 @@ interface CertificatePreviewProps {
 }
 
 export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
-  return (
-    <motion.div
-      layout
-      className="bg-white rounded-2xl shadow-lg p-8 border border-certificate-border aspect-[1/1.4142] relative overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-certificate-pattern opacity-5" />
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-50" />
-      
-      <div className="relative z-10 h-full flex flex-col items-center justify-between text-center">
-        <div className="space-y-6 w-full">
-          <div className="border-b-2 border-gray-100 pb-6">
-            {data.companyLogo && (
-              <motion.img
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                src={data.companyLogo}
-                alt="Company Logo"
-                className="h-24 mx-auto object-contain mb-6"
-              />
-            )}
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Certificate of Audit
-            </h1>
-            <p className="text-gray-600">This certifies that</p>
-          </div>
+  const handleDownload = async (format: 'png' | 'jpg') => {
+    try {
+      const element = document.getElementById('certificate');
+      if (!element) return;
 
-          <div className="space-y-6 flex-grow">
+      const dataUrl = format === 'png' 
+        ? await htmlToImage.toPng(element)
+        : await htmlToImage.toJpeg(element);
+      
+      const link = document.createElement('a');
+      link.download = `certificate.${format}`;
+      link.href = dataUrl;
+      link.click();
+      
+      toast.success(`Certificate downloaded as ${format.toUpperCase()}`);
+    } catch (err) {
+      console.error('Error downloading certificate:', err);
+      toast.error('Failed to download certificate');
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <motion.div
+        id="certificate"
+        layout
+        className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg"
+        style={{
+          backgroundImage: "url('https://www.ispartnersllc.com/wp-content/uploads/isp-certified-bg.svg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        <div className="absolute inset-0 flex flex-col items-center p-8">
+          {data.companyLogo && (
+            <motion.img
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              src={data.companyLogo}
+              alt="Company Logo"
+              className="h-24 object-contain mt-5"
+            />
+          )}
+          
+          <div className="flex-grow flex flex-col items-center justify-center gap-6 text-center max-w-2xl mx-auto">
+            <motion.h1
+              layout
+              className="text-white text-4xl font-bold"
+            >
+              {data.auditName || "Audit Name"}
+            </motion.h1>
+
             <motion.h2
               layout
-              className="text-2xl font-bold text-gray-900"
+              className="text-[#FFD200] text-2xl font-bold"
             >
               {data.companyName || "Company Name"}
             </motion.h2>
 
-            <motion.p layout className="text-gray-600">
-              has successfully completed
-            </motion.p>
-
-            <motion.h3
+            <motion.p
               layout
-              className="text-xl font-semibold text-gray-800"
+              className="text-white text-lg font-bold"
             >
-              {data.auditName || "Audit Name"}
-            </motion.h3>
+              {data.dateCertified
+                ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
+                : format(new Date(), "MMMM dd, yyyy")}
+            </motion.p>
 
             {data.summary && (
               <motion.p
                 layout
-                className="text-sm text-gray-600 max-w-md mx-auto"
+                className="text-white text-base"
               >
                 {data.summary}
               </motion.p>
             )}
           </div>
         </div>
+      </motion.div>
 
-        <div className="border-t-2 border-gray-100 pt-6 w-full">
-          <p className="text-gray-600">
-            Date Certified:{" "}
-            <span className="font-semibold">
-              {data.dateCertified
-                ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
-                : format(new Date(), "MMMM dd, yyyy")}
-            </span>
-          </p>
-        </div>
+      <div className="flex gap-4 justify-center">
+        <button
+          onClick={() => handleDownload('png')}
+          className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+        >
+          Download PNG
+        </button>
+        <button
+          onClick={() => handleDownload('jpg')}
+          className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+        >
+          Download JPG
+        </button>
       </div>
-    </motion.div>
+    </div>
   );
 };

@@ -43,7 +43,17 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       
       clone.style.width = `${width}px`;
       clone.style.height = `${height}px`;
-      clone.style.backgroundImage = 'url(/isp-cert-bg.jpg)';
+
+      // Load background image first
+      const bgImg = new Image();
+      bgImg.src = '/isp-cert-bg.jpg';
+      
+      await new Promise((resolve, reject) => {
+        bgImg.onload = resolve;
+        bgImg.onerror = reject;
+      });
+
+      clone.style.backgroundImage = `url(${bgImg.src})`;
       clone.style.backgroundSize = 'cover';
       clone.style.backgroundPosition = 'center';
 

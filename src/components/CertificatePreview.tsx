@@ -13,11 +13,9 @@ interface CertificateData {
 
 interface CertificatePreviewProps {
   data: CertificateData;
-  isDark?: boolean;
-  onThemeChange: (isDark: boolean) => void;
 }
 
-export const CertificatePreview = ({ data, isDark = true, onThemeChange }: CertificatePreviewProps) => {
+export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
   const formatFileName = () => {
     const auditSlug = data.auditName.toLowerCase().replace(/\s+/g, '-');
     const companySlug = data.companyName.toLowerCase().replace(/\s+/g, '-');
@@ -52,10 +50,6 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
     }
   };
 
-  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onThemeChange(e.target.value === "dark");
-  };
-
   return (
     <div className="space-y-4 font-['Poppins']">
       <motion.div
@@ -63,7 +57,7 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
         layout
         className="w-full aspect-[1/1.4142] relative overflow-hidden"
         style={{
-          backgroundImage: isDark ? 'url(/isp-certified-background.jpg)' : 'url(/public/isp-certificage-bg-white.jpg)',
+          backgroundImage: 'url(/isp-certified-background.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           fontFamily: 'Poppins, sans-serif'
@@ -84,7 +78,7 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
             <div className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
               <motion.h1
                 layout
-                className={isDark ? "text-white text-4xl font-bold" : "text-[#0a0f12] text-4xl font-bold"}
+                className="text-white text-4xl font-bold"
               >
                 {data.auditName || "Audit Name"}
               </motion.h1>
@@ -98,7 +92,7 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
 
               <motion.p
                 layout
-                className={isDark ? "text-white text-md" : "text-[#0a0f12] text-md"}
+                className="text-white text-md"
               >
                 {data.dateCertified
                   ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
@@ -108,7 +102,7 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
               {data.summary && (
                 <motion.p
                   layout
-                  className={isDark ? "text-white text-base" : "text-[#0a0f12] text-base"}
+                  className="text-white text-base"
                 >
                   {data.summary}
                 </motion.p>
@@ -119,15 +113,6 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
       </motion.div>
 
       <div className="flex flex-col items-center gap-4">
-        <select 
-          value={isDark ? "dark" : "light"}
-          onChange={handleThemeChange}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
-        >
-          <option value="dark">Dark Theme</option>
-          <option value="light">Light Theme</option>
-        </select>
-
         <button
           onClick={handleDownload}
           className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"

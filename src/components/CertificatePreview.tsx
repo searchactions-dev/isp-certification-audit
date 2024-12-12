@@ -49,49 +49,51 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
           backgroundPosition: 'center'
         }}
       >
-        <div className="absolute inset-0 flex flex-col items-center p-8">
-          {data.companyLogo && (
-            <motion.img
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              src={data.companyLogo}
-              alt="Company Logo"
-              className="h-24 object-contain mt-5"
-            />
-          )}
-          
-          <div className="flex-grow flex flex-col items-center justify-center gap-6 text-center max-w-2xl mx-auto">
-            <motion.h1
-              layout
-              className="text-white text-4xl font-bold"
-            >
-              {data.auditName || "Audit Name"}
-            </motion.h1>
+        <div className="absolute inset-0 p-8">
+          <div className="flex flex-col gap-6">
+            {data.companyLogo && (
+              <motion.img
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                src={data.companyLogo}
+                alt="Company Logo"
+                className="h-24 object-contain mt-5"
+              />
+            )}
+            
+            <div className="flex flex-col gap-6 text-center max-w-2xl mx-auto">
+              <motion.h1
+                layout
+                className="text-white text-4xl font-bold"
+              >
+                {data.auditName || "Audit Name"}
+              </motion.h1>
 
-            <motion.h2
-              layout
-              className="text-[#FFD200] text-2xl font-bold"
-            >
-              {data.companyName || "Company Name"}
-            </motion.h2>
+              <motion.h2
+                layout
+                className="text-[#FFD200] text-2xl font-bold"
+              >
+                {data.companyName || "Company Name"}
+              </motion.h2>
 
-            <motion.p
-              layout
-              className="text-white text-lg font-bold"
-            >
-              {data.dateCertified
-                ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
-                : format(new Date(), "MMMM dd, yyyy")}
-            </motion.p>
-
-            {data.summary && (
               <motion.p
                 layout
-                className="text-white text-base"
+                className="text-white text-lg font-bold"
               >
-                {data.summary}
+                {data.dateCertified
+                  ? format(new Date(data.dateCertified), "MMMM dd, yyyy")
+                  : format(new Date(), "MMMM dd, yyyy")}
               </motion.p>
-            )}
+
+              {data.summary && (
+                <motion.p
+                  layout
+                  className="text-white text-base"
+                >
+                  {data.summary}
+                </motion.p>
+              )}
+            </div>
           </div>
         </div>
       </motion.div>

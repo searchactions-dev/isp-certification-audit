@@ -52,19 +52,12 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
     }
   };
 
+  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onThemeChange(e.target.value === "dark");
+  };
+
   return (
     <div className="space-y-4 font-['Poppins']">
-      <div className="flex justify-end mb-4">
-        <select 
-          value={isDark ? "dark" : "light"}
-          onChange={(e) => onThemeChange(e.target.value === "dark")}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
-        >
-          <option value="dark">Dark Theme</option>
-          <option value="light">Light Theme</option>
-        </select>
-      </div>
-
       <motion.div
         id="certificate"
         layout
@@ -125,7 +118,16 @@ export const CertificatePreview = ({ data, isDark = true, onThemeChange }: Certi
         </div>
       </motion.div>
 
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <select 
+          value={isDark ? "dark" : "light"}
+          onChange={handleThemeChange}
+          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
+        >
+          <option value="dark">Dark Theme</option>
+          <option value="light">Light Theme</option>
+        </select>
+
         <button
           onClick={handleDownload}
           className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"

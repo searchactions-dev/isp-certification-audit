@@ -80,7 +80,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
               />
             )}
             
-            <div className="flex flex-col gap-[50px] text-center max-w-2xl mx-auto">
+            <div className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
               <motion.h1
                 layout
                 className="text-white text-4xl font-bold"

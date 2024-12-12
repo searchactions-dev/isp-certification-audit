@@ -36,29 +36,34 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
       // Clone the certificate element
       const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.width = '1200px';
-      clone.style.height = '1697px';
+      
+      // Set width to 800px and calculate height to maintain aspect ratio (1:1.4142)
+      const width = 800;
+      const height = Math.round(width * 1.4142); // Maintains A4 aspect ratio
+      
+      clone.style.width = `${width}px`;
+      clone.style.height = `${height}px`;
       clone.style.backgroundImage = 'url(/isp-cert-bg.jpg)';
       clone.style.backgroundSize = 'cover';
       clone.style.backgroundPosition = 'center';
 
-      // Set explicit font sizes for the cloned elements
+      // Set explicit font sizes proportional to the new size
       const auditNameEl = clone.querySelector('h1') as HTMLElement;
       const companyNameEl = clone.querySelector('h2') as HTMLElement;
       const dateEl = clone.querySelector('p:nth-of-type(1)') as HTMLElement;
       const summaryEl = clone.querySelector('p:nth-of-type(2)') as HTMLElement;
       
-      if (auditNameEl) auditNameEl.style.fontSize = '36px';
-      if (companyNameEl) companyNameEl.style.fontSize = '28px';
-      if (dateEl) dateEl.style.fontSize = '18px';
-      if (summaryEl) summaryEl.style.fontSize = '16px';
+      if (auditNameEl) auditNameEl.style.fontSize = '24px';
+      if (companyNameEl) companyNameEl.style.fontSize = '20px';
+      if (dateEl) dateEl.style.fontSize = '16px';
+      if (summaryEl) summaryEl.style.fontSize = '14px';
 
       container.appendChild(clone);
 
       const dataUrl = await htmlToImage.toJpeg(clone, {
         quality: 0.95,
-        width: 1200,
-        height: 1697,
+        width: width,
+        height: height,
       });
       
       // Clean up

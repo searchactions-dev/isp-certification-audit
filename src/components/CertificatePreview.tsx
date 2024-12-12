@@ -24,30 +24,26 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
   const handleDownload = async () => {
     try {
-      console.log('Starting certificate download process');
       const element = document.getElementById('certificate');
       if (!element) {
-        console.error('Certificate element not found');
+        toast.error('Certificate element not found');
         return;
       }
 
-      console.log('Generating JPEG image');
       const dataUrl = await htmlToImage.toJpeg(element, {
         quality: 0.95,
         backgroundColor: '#ffffff',
-        style: {
-          transform: 'scale(1)',
-          transformOrigin: 'top left'
-        }
+        fontEmbedCSS: '@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");'
       });
       
-      console.log('Creating download link');
       const link = document.createElement('a');
       link.download = formatFileName();
       link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
       
-      toast.success('Certificate downloaded as JPG');
+      toast.success('Certificate downloaded successfully');
     } catch (err) {
       console.error('Error downloading certificate:', err);
       toast.error('Failed to download certificate');
@@ -55,15 +51,16 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 font-['Poppins']">
       <motion.div
         id="certificate"
         layout
-        className="w-full aspect-[1/1.4142] relative overflow-hidden rounded-2xl shadow-lg"
+        className="w-full aspect-[1/1.4142] relative overflow-hidden"
         style={{
-          backgroundImage: 'url(https://www.ispartnersllc.com/wp-content/uploads/isp-cert-bg.jpg)',
+          backgroundImage: 'url(/isp-cert-bg.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          fontFamily: 'Poppins, sans-serif'
         }}
       >
         <div className="absolute inset-0 p-8">
@@ -88,14 +85,14 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
 
               <motion.h2
                 layout
-                className="text-[#FFD200] text-[28px] font-bold"
+                className="text-[#FFD200] text-2xl font-bold"
               >
                 {data.companyName || "Company Name"}
               </motion.h2>
 
               <motion.p
                 layout
-                className="text-white text-lg font-bold"
+                className="text-white text-md"
               >
                 {data.dateCertified
                   ? format(new Date(data.dateCertified), "MMMM dd, yyyy")

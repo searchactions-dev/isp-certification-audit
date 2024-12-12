@@ -37,11 +37,21 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       const dataUrl = format === 'png' 
         ? await htmlToImage.toPng(element, {
             quality: 1.0,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            style: {
+              backgroundImage: `url(${bgImg.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }
           })
         : await htmlToImage.toJpeg(element, {
             quality: 0.95,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            style: {
+              backgroundImage: `url(${bgImg.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }
           });
       
       const link = document.createElement('a');
@@ -76,7 +86,7 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
                 animate={{ opacity: 1, scale: 1 }}
                 src={data.companyLogo}
                 alt="Company Logo"
-                className="h-24 object-contain mt-5"
+                className="h-24 object-contain mt-5 mb-8"
               />
             )}
             

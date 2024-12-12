@@ -34,8 +34,6 @@ export const CertificatePreview = ({ data }: CertificatePreviewProps) => {
       console.log('Generating JPEG image');
       const dataUrl = await htmlToImage.toJpeg(element, {
         quality: 0.95,
-        width: 800,
-        height: Math.round(800 * 1.4142),
         backgroundColor: '#ffffff',
         style: {
           transform: 'scale(1)',
